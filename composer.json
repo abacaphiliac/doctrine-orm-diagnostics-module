@@ -1,12 +1,20 @@
 {
   "name": "abacaphiliac/doctrine-orm-diagnostics-module",
-  "description": "A ZF2 validator for justinrainbow/json-schema.",
+  "description": "Integration of doctrine/doctrine-orm-module and zendframework/zenddiagnostics",
   "license": "MIT",
   "authors": [
     {
       "name": "Timothy Younger",
       "email": "abacaphiliac@gmail.com"
     }
+  ],
+  "keywords": [
+    "doctrine",
+    "orm",
+    "module",
+    "zf2",
+    "zendframework",
+    "diagnostics"
   ],
   "require": {
     "php": ">=5.5",
