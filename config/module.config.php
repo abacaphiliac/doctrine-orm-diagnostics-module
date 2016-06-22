@@ -11,7 +11,7 @@ return array(
     'diagnostics' => array(
         'DoctrineORMDiagnosticsModule' => array(
             'Database Connection' => 'doctrine.orm_diagnostics.connection',
-            'ORM Validate Schema' => 'doctrine.orm_diagnostics.schema',
+            //'ORM Validate Schema' => 'doctrine.orm_diagnostics.schema',
         ),
     ),
 );
