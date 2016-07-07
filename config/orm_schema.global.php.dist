@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'diagnostics' => [
+        'DoctrineORMDiagnosticsModule' => [
+            'ORM Schema Valid' => 'doctrine.orm_diagnostics.schema',
+        ],
+    ],
+];

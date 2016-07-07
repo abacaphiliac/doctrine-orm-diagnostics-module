@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'diagnostics' => [
+        'DoctrineORMDiagnosticsModule' => [
+            'Schema Migrations Up-To-Date' => 'doctrine.migrations_diagnostics.uptodate',
+        ],
+    ],
+];

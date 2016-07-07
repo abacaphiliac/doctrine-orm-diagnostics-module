@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/abacaphiliac/doctrine-orm-diagnostics-module.svg?branch=master)](https://travis-ci.org/abacaphiliac/doctrine-orm-diagnostics-module)
 
 # abacaphiliac/doctrine-orm-diagnostics-module
-Integration of doctrine/doctrine-orm-module and zendframework/zenddiagnostics.
-Provides ZF2 Diagnostic checks of Doctrine ORM Connection(s) and Schema. 
+Integration of doctrine/doctrine-orm-module, zendframework/zenddiagnostics, and (optionally) doctrine/migrations.
+Provides ZF2 Diagnostic checks of Doctrine ORM Connection, Entities, and Schema.
 
 # Installation
 ```bash
@@ -13,6 +13,16 @@ composer require abacaphiliac/doctrine-orm-diagnostics-module
 
 # Usage
 Add `Abacaphiliac\DoctrineORMDiagnosticsModule` to your application module config.
+
+Database Connection and ORM Entity checks are in-place already, but you must opt-in to a schema validator
+if you want to use one.
+ 
+## How do I choose and configure a schema validator? 
+Copy and rename `config/migrations_schema.global.php.dist` into your application
+autoload directory if you use `doctrine/migrations` with `doctrine/doctrine-orm-module` for managing schema.
+
+Or, copy and rename `config/orm_schema.global.php.dist` into your application autoload directory if you only
+use `doctrine/doctrine-orm-module` for managing schema.
 
 ## What can I do if I don't use `orm_default`?
 Create your own `CheckConnectionFactory` (a very simple factory) and override the 

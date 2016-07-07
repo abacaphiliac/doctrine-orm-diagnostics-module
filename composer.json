@@ -1,6 +1,6 @@
 {
   "name": "abacaphiliac/doctrine-orm-diagnostics-module",
-  "description": "Integration of doctrine/doctrine-orm-module and zendframework/zenddiagnostics",
+  "description": "Integration of doctrine/doctrine-orm-module, zendframework/zenddiagnostics, and (optionally) doctrine/migrations.",
   "license": "MIT",
   "authors": [
     {
@@ -28,15 +28,22 @@
     "doctrine/doctrine-module": "^1.0"
   },
   "require-dev": {
+    "doctrine/migrations": "dev-master",
     "jakub-onderka/php-parallel-lint": "^0.9",
     "mikey179/vfsStream": "^1.6",
     "phing/phing": "^2.9",
     "phpunit/phpunit": "^5.4|^4.8",
-    "squizlabs/php_codesniffer": "^2.2"
+    "squizlabs/php_codesniffer": "^2.2",
+    "zendframework/zendframework": "^2.0"
   },
   "autoload": {
     "psr-4": {
       "Abacaphiliac\\DoctrineORMDiagnosticsModule\\": "src/DoctrineORMDiagnosticsModule"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DoctrineORMModuleTest\\": "vendor/doctrine/doctrine-orm-module/tests/DoctrineORMModuleTest"
     }
   }
 }
