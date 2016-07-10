@@ -16,69 +16,59 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-namespace Abacaphiliac\DoctrineORMDiagnosticsModuleTest\CliTest;
+namespace Abacaphiliac\DoctrineORMDiagnosticsModuleTest\ModuleCollaboration;
 
 use Doctrine\DBAL\Migrations\Tools\Console\Command\UpToDateCommand;
-use Doctrine\ORM\EntityManager;
-use DoctrineORMModuleTest\Util\ServiceManagerFactory;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Test\Util\ModuleLoader;
 
 class ModuleCollaborationTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Application */
+    private $application;
+    
     /** @var ServiceLocatorInterface */
     private $serviceLocator;
     
     /** @var SymfonyConsoleApplication */
     protected $cli;
 
-    /** @var EntityManager */
-    protected $entityManager;
-
-    /**
-     * @return void
-     */
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        
-        $config = require __DIR__ . '/TestConfiguration.php.dist';
-        
-        ServiceManagerFactory::setConfig($config);
-    }
-
     /**
      * @return void
      */
     protected function setUp()
     {
-        $this->serviceLocator = ServiceManagerFactory::getServiceManager();
+        $loader = new ModuleLoader([
+            'modules' => [
+                'DoctrineModule',
+                'DoctrineORMModule',
+                'ZFTool',
+                'Abacaphiliac\DoctrineORMDiagnosticsModule',
+            ],
+            'module_listener_options' => [
+                'config_static_paths' => [
+                    __DIR__ . '/test.config.php',
+                ],
+                'module_paths' => [],
+            ],
+        ]);
+        
+        $this->serviceLocator = $loader->getServiceManager();
         \PHPUnit_Framework_Assert::assertInstanceOf(ServiceLocatorInterface::class, $this->serviceLocator);
         
         /* @var $sharedEventManager SharedEventManagerInterface */
         $sharedEventManager = $this->serviceLocator->get('SharedEventManager');
         \PHPUnit_Framework_Assert::assertInstanceOf(SharedEventManagerInterface::class, $sharedEventManager);
         
-        /* @var $application Application */
-        $application = $this->serviceLocator->get('Application');
-        \PHPUnit_Framework_Assert::assertInstanceOf(Application::class, $application);
-        
-        $invocations = 0;
-        $sharedEventManager->attach('doctrine', 'loadCli.post', function () use (&$invocations) {
-            $invocations++;
-        });
-
-        $application->bootstrap();
-        
-        $this->entityManager = $this->serviceLocator->get('doctrine.entitymanager.orm_default');
-        \PHPUnit_Framework_Assert::assertInstanceOf(EntityManager::class, $this->entityManager);
+        $this->application = $loader->getApplication();
+        \PHPUnit_Framework_Assert::assertInstanceOf(Application::class, $this->application);
+        $this->application->bootstrap();
         
         $this->cli = $this->serviceLocator->get('doctrine.cli');
         \PHPUnit_Framework_Assert::assertInstanceOf(SymfonyConsoleApplication::class, $this->cli);
-        
-        self::assertSame(1, $invocations);
     }
     
     public function testValidUpToDateCommandFromServiceLocator()
