@@ -4,6 +4,7 @@ namespace Abacaphiliac\DoctrineORMDiagnosticsModuleTest;
 
 use Abacaphiliac\DoctrineORMDiagnosticsModule\AbstractCheckCommandFactory;
 use Abacaphiliac\DoctrineORMDiagnosticsModule\CheckCommand;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Zend\ServiceManager\ServiceManager;
 
@@ -31,6 +32,7 @@ class AbstractCheckCommandFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->sut->method('getCommandServiceName')->willReturn('FooBar');
         
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('FooBar', new Command('FooBar'));
 
         $actual = $this->sut->createService($this->serviceLocator);
@@ -44,8 +46,19 @@ class AbstractCheckCommandFactoryTest extends \PHPUnit_Framework_TestCase
     public function testNotCreateServiceDueToInvalidCommandType()
     {
         $this->sut->method('getCommandServiceName')->willReturn('FooBar');
-        
+
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('FooBar', new \stdClass());
+
+        $this->sut->createService($this->serviceLocator);
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function testNotCreateServiceDueToInvalidCommandLineInterface()
+    {
+        $this->serviceLocator->setService('doctrine.cli', new \stdClass());
 
         $this->sut->createService($this->serviceLocator);
     }

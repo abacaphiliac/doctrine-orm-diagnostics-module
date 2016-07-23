@@ -5,6 +5,7 @@ namespace Abacaphiliac\DoctrineORMDiagnosticsModuleTest;
 use Abacaphiliac\DoctrineORMDiagnosticsModule\CheckCommand;
 use Abacaphiliac\DoctrineORMDiagnosticsModule\CheckOrm\CheckOrmInfoFactory;
 use Doctrine\ORM\Tools\Console\Command\InfoCommand;
+use Symfony\Component\Console\Application;
 use Zend\Console\Request;
 use Zend\ServiceManager\ServiceManager;
 
@@ -43,6 +44,7 @@ class CheckOrmInfoFactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testCreateService()
     {
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('doctrine.orm_cmd.info', $this->command);
         $this->serviceLocator->setService('Request', $this->request);
         

@@ -5,6 +5,7 @@ namespace Abacaphiliac\DoctrineORMDiagnosticsModuleTest;
 use Abacaphiliac\DoctrineORMDiagnosticsModule\CheckCommand;
 use Abacaphiliac\DoctrineORMDiagnosticsModule\CheckSchemaFactory;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
+use Symfony\Component\Console\Application;
 use Zend\Console\Request;
 use Zend\ServiceManager\ServiceManager;
 
@@ -43,6 +44,7 @@ class CheckSchemaFactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testCreateService()
     {
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('doctrine.orm_cmd.validate_schema', $this->command);
         $this->serviceLocator->setService('Request', $this->request);
         

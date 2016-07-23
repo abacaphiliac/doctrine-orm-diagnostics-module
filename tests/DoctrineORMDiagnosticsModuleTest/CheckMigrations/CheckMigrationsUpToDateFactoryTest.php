@@ -8,6 +8,7 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\UpToDateCommand;
 use DoctrineModule\ServiceFactory\AbstractDoctrineServiceFactory;
 use DoctrineORMModule\Service\MigrationsCommandFactory;
+use Symfony\Component\Console\Application;
 use Zend\Console\Request;
 use Zend\ServiceManager\ServiceManager;
 
@@ -54,6 +55,7 @@ class CheckMigrationsUpToDateFactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testCreateService()
     {
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('doctrine.migrations_cmd.uptodate', $this->command);
         $this->serviceLocator->setService('Request', $this->request);
         
@@ -64,6 +66,7 @@ class CheckMigrationsUpToDateFactoryTest extends \PHPUnit_Framework_TestCase
     
     public function testCreateServiceCollaborationTest()
     {
+        $this->serviceLocator->setService('doctrine.cli', new Application());
         $this->serviceLocator->setService('config', [
             'doctrine_factories' => [
                 'migrations_cmd' => MigrationsCommandFactory::class,
